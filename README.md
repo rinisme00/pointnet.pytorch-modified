@@ -1,12 +1,15 @@
+# Original work
+This repo is implementation for poinet.pytorch.
+Original work: https://github.com/fxia22/pointnet.pytorch
 # PointNet.pytorch
 This repo is implementation for PointNet(https://arxiv.org/abs/1612.00593) in pytorch. The model is in `pointnet/model.py`.
 
-It is tested with pytorch-1.0.
+It is tested with Python 3.9.21, Pytorch 2.5.1, CUDA 11.8.
 
 # Download data and running
 
 ```
-git clone https://github.com/fxia22/pointnet.pytorch
+git clone https://github.com/rinisme00/pointnet.pytorch-modified
 cd pointnet.pytorch
 pip install -e .
 ```
@@ -21,48 +24,33 @@ bash download.sh #download dataset
 Training 
 ```
 cd utils
-python train_classification.py --dataset <dataset path> --nepoch=<number epochs> --dataset_type <modelnet40 | shapenet>
+python train_classification.py --dataset <dataset path> --nepoch=<number epochs> --num_classes <number of classes> --outf <output path>
 python train_segmentation.py --dataset <dataset path> --nepoch=<number epochs> 
 ```
 
 Use `--feature_transform` to use feature transform.
 
-# Performance
+# Convert Dataset
+```
+cd Convert_PCD
+```
+Put the .pcd files in the /in folder. The ```convert.py``` will convert them into .pts (the coordinates of point clouds in 3D space) and .seg (labels for each of point clouds) format.
+```
+python convert.py
+```
 
-## Classification performance
+# Visualization
+```
+mkdir results
+python show_seg.py --model <the path of .pth files after training> --dataset <dataset path> --split test --idx=<depends on the number of classes of the object> --save results/<image.png> --export results/<.pth model> --export_gt results/<ground truth model> --export_edges results/<.pth model> --conf_thresh <threshold for unassigned>
+```
 
-On ModelNet40:
-
-|  | Overall Acc | 
-| :---: | :---: | 
-| Original implementation | 89.2 | 
-| this implementation(w/o feature transform) | 86.4 | 
-| this implementation(w/ feature transform) | 87.0 | 
-
-On [A subset of shapenet](http://web.stanford.edu/~ericyi/project_page/part_annotation/index.html)
-
-|  | Overall Acc | 
-| :---: | :---: | 
-| Original implementation | N/A | 
-| this implementation(w/o feature transform) | 98.1 | 
-| this implementation(w/ feature transform) | 97.7 | 
-
-## Segmentation performance
-
-Segmentation on  [A subset of shapenet](http://web.stanford.edu/~ericyi/project_page/part_annotation/index.html).
-
-| Class(mIOU) | Airplane | Bag| Cap|Car|Chair|Earphone|Guitar|Knife|Lamp|Laptop|Motorbike|Mug|Pistol|Rocket|Skateboard|Table
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | 
-| Original implementation |  83.4 | 78.7 | 82.5| 74.9 |89.6| 73.0| 91.5| 85.9| 80.8| 95.3| 65.2| 93.0| 81.2| 57.9| 72.8| 80.6| 
-| this implementation(w/o feature transform) | 73.5 | 71.3 | 64.3 | 61.1 | 87.2 | 69.5 | 86.1|81.6| 77.4|92.7|41.3|86.5|78.2|41.2|61.0|81.1|
-| this implementation(w/ feature transform) |  |  |  |  | 87.6 |  | | | | | | | | | |81.0|
-
-Note that this implementation trains each class separately, so classes with fewer data will have slightly lower performance than reference implementation.
-
-Sample segmentation result:
-![seg](https://raw.githubusercontent.com/fxia22/pointnet.pytorch/master/misc/show3d.png?token=AE638Oy51TL2HDCaeCF273X_-Bsy6-E2ks5Y_BUzwA%3D%3D)
-
-# Links
-
-- [Project Page](http://stanford.edu/~rqi/pointnet/)
-- [Tensorflow implementation](https://github.com/charlesq34/pointnet)
+# Example
+In this section, I tested with brick object. Here is the visualization of the object after segmentation:
+![image](https://github.com/user-attachments/assets/64682ad9-4d77-4cd5-ba6f-7978718efb09)
+![image](https://github.com/user-attachments/assets/8ca53a8d-58d9-4187-b455-865bd54f2cab)
+![image](https://github.com/user-attachments/assets/d7428006-bc90-4d04-ad83-d4c849c7b784)
+![image](https://github.com/user-attachments/assets/904947a9-5114-44b5-a260-ff5557b1ab9c)
+![image](https://github.com/user-attachments/assets/4e885568-e960-473c-892b-8db196f11df2)
+![image](https://github.com/user-attachments/assets/5caca3d2-8481-40e5-b693-a0b71f14094c)
+![image](https://github.com/user-attachments/assets/e8742802-f1cb-47c0-a5b4-b6fa4a10b6a9)
