@@ -1,8 +1,9 @@
-Metadata-Version: 2.2
+Metadata-Version: 2.4
 Name: pointnet
 Version: 0.0.1
 License-File: LICENSE
 Requires-Dist: torch
 Requires-Dist: tqdm
 Requires-Dist: plyfile
+Dynamic: license-file
 Dynamic: requires-dist

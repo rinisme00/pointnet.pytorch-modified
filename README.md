@@ -54,3 +54,4 @@ In this section, I tested with brick object. Here is the visualization of the ob
 ![image](https://github.com/user-attachments/assets/4e885568-e960-473c-892b-8db196f11df2)
 ![image](https://github.com/user-attachments/assets/5caca3d2-8481-40e5-b693-a0b71f14094c)
 ![image](https://github.com/user-attachments/assets/e8742802-f1cb-47c0-a5b4-b6fa4a10b6a9)
+![image](https://github.com/user-attachments/assets/96eabc1e-f862-444f-9e08-f0314f2e3016)
