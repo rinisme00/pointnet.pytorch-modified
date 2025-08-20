@@ -21,7 +21,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from custom_dataset import CustomDataset
+from utils.custom_dataset import CustomDataset
 from pointnet.model import PointNetDenseCls
 
 
@@ -100,7 +100,12 @@ def main():
     device = torch.device('cpu' if args.cpu or not torch.cuda.is_available() else 'cuda')
 
     # Load dataset
-    ds = CustomDataset(args.dataset, split=args.split, num_points=args.num_points, augment=False)
+    ds = CustomDataset(
+        root_dir=args.dataset,
+        split=args.split,
+        num_points=args.num_points,
+        augment=False
+    )
     if len(ds) == 0:
         sys.exit(f"No samples found in split '{args.split}'")
 
@@ -110,7 +115,11 @@ def main():
     gt_arr = gt_lbl.numpy()
 
     # Load model
-    state = torch.load(os.path.expanduser(args.model), map_location=device)
+    state = torch.load(
+        os.path.expanduser(args.model),
+        map_location=device,
+        weights_only=True,  # only load the tensor weights
+    )
     state_dict = state.get('state_dict', state) if isinstance(state, dict) else state
     # Infer num_classes
     num_classes = state_dict.get('conv4.weight', None)
